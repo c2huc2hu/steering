@@ -1,48 +1,25 @@
-// An object that can change direction, but is constrained by a maximum speed and force. 
-// I will need to fudge these a little bit, because discrete != analytical
-
+// An object that can steer somewhat intelligently towards a point
 var DumbObject = function(x, y, maxSpeed, maxForce)
 {
-    MovingObject.call(this, x, y); 
-    this.maxSpeed = maxSpeed; 
-    this.maxForce = maxForce; 
-    this.steerX = 0; // steering forces 
-    this.steerY = 0; 
+    SteeringObject.call(this, x, y, maxSpeed, maxForce); 
 }
+DumbObject.prototype = Object.create(SteeringObject.prototype); 
 
-DumbObject.prototype = Object.create(MovingObject.prototype); 
-
-// Give the direction (and magnitude if less than maxForce) of the steering force
-DumbObject.prototype.steer = function(steerX, steerY)
+DumbObject.prototype.seek = function(target)
 {
-    this.steerX = steerX; 
-    this.steerY = steerY; 
+    var desiredvx = target.x - this.x; 
+    var desiredvy = target.y - this.y; 
+    this.steer(desiredvx * 10000, desiredvy * 10000); 
 }
 
-// Overload default functions
+DumbObject.prototype.flee = function(target)
+{
+    var desiredvx = this.x - target.x; 
+    var desiredvy = this.y - target.y;  
+    this.steer(desiredvx * 10000, desiredvy * 10000); 
+}
+
 DumbObject.prototype.update = function(dt)
 {
-    function square(x) { return x * x; } // helper function
-    
-    // cap the magnitude of the steering force to maxForce
-    if(square(this.steerX) + square(this.steerY) > square(this.maxForce))
-    {
-        var scaleFactor = square(this.maxForce) / (square(this.steerX) + square(this.steerY));
-        this.steerX *= scaleFactor; 
-        this.steerY *= scaleFactor; 
-    }
-    
-    this.vx += this.steerX * dt; 
-    this.vy += this.steerY * dt; 
-    
-    // cap the magnitude of the velocity
-    if(square(this.vx) + square(this.vy) > square(this.maxSpeed))
-    {
-        var scaleFactor = square(this.maxSpeed) / (square(this.vx) + square(this.vy));
-        this.vx *= scaleFactor; 
-        this.vy *= scaleFactor; 
-    }
-    
-    this.x += this.vx; 
-    this.y += this.vy; 
+    Object.getPrototypeOf(DumbObject.prototype).update.call(this, dt); 
 }

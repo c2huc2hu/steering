@@ -1,6 +1,7 @@
 // main.js
 
 var lastTime = 0; 
+var approxdt = 1.0/60; // approximation for 1/the frame rate, i.e. dt used in the update function
 
 var canvas; // main canvas for the game 
 var ctx; // context for the game, so you can draw on this. 
@@ -12,7 +13,7 @@ var boids = [];
 function init()
 {
     // Initialize boids
-    boids.push(new DumbObject(10, 50, 10, 40), new DumbObject(60, 30, 10, 40)); 
+    boids.push(new DumbObject(10, 50, 100, 200), new DumbObject(10, 50, 100, 200)); 
     images = initImages(); 
     
     canvas = document.getElementById("canvas")
@@ -38,9 +39,11 @@ function main()
 
 function update(dt)
 {
+    boids[0].arrive(mouse);
+    //boids[1].seek(mouse); 
     for(i=0; i<boids.length; i++)
     {
-        boids[i].seek(mouse); 
+        //boids[i].arrive(mouse); 
         boids[i].update(dt); 
     }
 }

@@ -1,19 +1,21 @@
 // main.js
 
-var lastTime = 0; 
-var approxdt = 1.0/60; // approximation for 1/the frame rate, i.e. dt used in the update function
+var lastTime = 0;
+var frame = 0; // frame counter
 
 var canvas; // main canvas for the game 
 var ctx; // context for the game, so you can draw on this. 
 var mouse = {x:0, y:0}; 
 
-
 var boids = []; 
+
+var initGraph = function() {};   //placeholders
+var updateGraph = function() {}; 
 
 function init()
 {
     // Initialize boids
-    boids.push(new DumbObject(10, 50, 100, 200), new DumbObject(10, 50, 100, 200)); 
+    boids.push(new DumbObject(10, 50, 100, 70), new DumbObject(10, 50, 100, 70)); 
     images = initImages(); 
     
     canvas = document.getElementById("canvas")
@@ -21,6 +23,12 @@ function init()
     ctx = canvas.getContext("2d");
     
     lastTime = Date.now();
+    
+    // initialize graph canvas
+    graph = document.getElementById("graph"); 
+    graph.style.backgroundColor = "#000000"
+    graphctx = graph.getContext("2d");
+    
     main(); 
 }
 
@@ -46,6 +54,9 @@ function update(dt)
         //boids[i].arrive(mouse); 
         boids[i].update(dt); 
     }
+    frame++; 
+    
+    updateGraph(); 
 }
 
 function render(context)

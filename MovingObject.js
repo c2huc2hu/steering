@@ -22,7 +22,7 @@ MovingObject.prototype.render = function(context)
     context.strokeStyle = "#888888";
     context.arc(this.x, this.y, 5, 0, 2 * Math.PI); 
     context.moveTo(this.x, this.y); 
-    context.lineTo(this.x + this.vx * 10, this.y + this.vy * 10); 
+    context.lineTo(this.x + this.vx, this.y + this.vy); 
     context.fill();
     context.stroke();
 }

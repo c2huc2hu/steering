@@ -6,22 +6,21 @@ var DumbObject = function(x, y, maxSpeed, maxForce)
 }
 DumbObject.prototype = Object.create(SteeringObject.prototype); 
 
-// head towards the target. desiredSpeed defaults to the maximum speed. 
+// seek towards the target. 
 DumbObject.prototype.seek = function(target, desiredSpeed)
 {
-    desiredSpeed = desiredSpeed || this.maxSpeed; //default speed is maxSpeed
-    var desiredvx = (target.x - this.x); 
-    var desiredvy = (target.y - this.y); 
+    desiredSpeed = desiredSpeed || this.maxSpeed; 
+    var desiredvx = (target.x - this.x - this.vx);  //hmm, for some reason it works if I use a right hand approximation instead of 
+    var desiredvy = (target.y - this.y - this.vy); 
     var velocity = Math.sqrt(desiredvx*desiredvx + desiredvy*desiredvy); 
     desiredvx *= desiredSpeed / velocity; 
     desiredvy *= desiredSpeed / velocity; 
     
-    console.log(Math.sqrt(this.vx*this.vx+this.vy*this.vy));
-    var forcex = desiredvx - this.vx * 60; 
-    var forcey = desiredvy - this.vy * 60;  
+    var forcex = desiredvx - this.vx;  // I don't know why/ whether I need a constant factor here. It makes arrive work properly, but the multiplier divides the max speed. 
+    var forcey = desiredvy - this.vy;  
     var force = Math.sqrt(forcex*forcex + forcey*forcey); 
     
-    if (force > this.maxForce)
+    if (force > this.maxForce) // note: the maximum force may not always be used. But if I always enable it, I get weird jerking behaviour. 
         this.steer(forcex * this.maxForce / force, forcey * this.maxForce / force); 
     else
         this.steer(forcex, forcey); 
@@ -44,7 +43,6 @@ DumbObject.prototype.arrive = function(target)
     if (dx*dx + dy*dy <= this.stoppingDistance*this.stoppingDistance)
     {
         var desiredSpeed = this.maxSpeed * Math.sqrt(dx*dx + dy*dy) / this.stoppingDistance; 
-        console.log(desiredSpeed)
         this.seek(target, desiredSpeed); 
     }
     else

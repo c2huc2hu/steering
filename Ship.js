@@ -8,26 +8,32 @@ var Ship = function (x, y, maxSpeed, maxForce, turnSpeed)
 }
 Ship.prototype = Object.create(DumbObject.prototype);
 
-Ship.prototype.addModule = function(type, offsetX, offsetY)
+Ship.prototype.addWeaponModule = function(offsetX, offsetY, bullet, cooldown)
 {
-    this.modules.push(new Module(offsetX, offsetY, this)); 
+    this.modules.push(new WeaponModule(this, offsetX, offsetY, bullet, cooldown)); 
 }
 
-Ship.prototype.clone = function(ship)
+Ship.prototype.addModule = function(type, offsetX, offsetY)
 {
-    
+    this.modules.push(new Module(this, offsetX, offsetY)); 
+}
+
+/* Copy all properties from a ship */ 
+Ship.prototype.clone = function(ship) 
+{
+        
 }
 
 Ship.prototype.update = function(dt)
 {
     Object.getPrototypeOf(Ship.prototype).update.call(this, dt); 
     
-    var curHeading = Math.atan2(this.vy, this.vx); 
-    if (curHeading - this.heading < this.turnSpeed)
-        this.heading = curHeading; 
-    else if (curHeading - this.heading < 0)
+    var desiredHeading = Math.atan2(this.vy, this.vx); 
+    if (desiredHeading - this.heading < this.turnSpeed)
+        this.heading = desiredHeading; 
+    else if (desiredHeading - this.heading < 0)
         this.heading += this.turnSpeed * dt; 
-    else if (curHeading - this.heading > 0)
+    else if (desiredHeading - this.heading > 0)
     {
         this.heading -= this.turnSpeed * dt; 
     }

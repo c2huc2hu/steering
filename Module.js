@@ -1,8 +1,10 @@
-var Module = function(offsetX, offsetY, ship)
+// base class/ placeholder for modules
+
+var Module = function(ship, offsetX, offsetY)
 {
+    this.ship = ship; // this.ship must have: x, y, heading. 
     this.offsetX = offsetX;  
     this.offsetY = offsetY; 
-    this.ship = ship; // this.ship must have: x, y, heading. 
 }
 
 Module.prototype.render = function(context)

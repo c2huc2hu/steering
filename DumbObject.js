@@ -1,48 +1,76 @@
-// An object that can change direction, but is constrained by a maximum speed and force. 
-// I will need to fudge these a little bit, because discrete != analytical
-
+// An object that can steer somewhat intelligently towards a point
 var DumbObject = function(x, y, maxSpeed, maxForce)
 {
-    MovingObject.call(this, x, y); 
-    this.maxSpeed = maxSpeed; 
-    this.maxForce = maxForce; 
-    this.steerX = 0; // steering forces 
-    this.steerY = 0; 
+    SteeringObject.call(this, x, y, maxSpeed, maxForce); 
+    this.stoppingDistance = this.maxSpeed*this.maxSpeed / 2 / this.maxForce; 
 }
+DumbObject.prototype = Object.create(SteeringObject.prototype); 
 
-DumbObject.prototype = Object.create(MovingObject.prototype); 
-
-// Give the direction (and magnitude if less than maxForce) of the steering force
-DumbObject.prototype.steer = function(steerX, steerY)
+// seek towards the target. 
+DumbObject.prototype.seek = function(target, desiredSpeed)
 {
-    this.steerX = steerX; 
-    this.steerY = steerY; 
+    desiredSpeed = desiredSpeed || this.maxSpeed; 
+    this.desiredSpeed = desiredSpeed
+    var desiredvx = (target.x - this.x);  //hmm, for some reason arrive works if I approximate by subtracting this.vx, but seek doesn't. 
+    var desiredvy = (target.y - this.y); 
+    var velocity = Math.sqrt(desiredvx*desiredvx + desiredvy*desiredvy); 
+    desiredvx *= desiredSpeed / velocity; 
+    desiredvy *= desiredSpeed / velocity; 
+    
+    var forcex = (desiredvx - this.vx) * 100; 
+    var forcey = (desiredvy - this.vy) * 100;  
+    var force = Math.sqrt(forcex*forcex + forcey*forcey); 
+    
+    if (force > this.maxForce) // note: the maximum force may not always be used. But if I always enable it, I get weird jerking behaviour. 
+    {
+        this.steer(forcex * this.maxForce / force, forcey * this.maxForce / force); 
+    }
+    else
+    {
+        this.steer(forcex, forcey); 
+    }
 }
 
-// Overload default functions
+DumbObject.prototype.flee = function(target)
+{
+    this.seek(target, -this.maxSpeed); 
+}
+
+DumbObject.prototype.arrive = function(target)
+{
+    var dx = target.x - this.x; 
+    var dy = target.y - this.y;     
+    if (dx == 0 && dy == 0)
+    {
+        return; 
+    }
+    
+    if (dx*dx + dy*dy <= this.stoppingDistance*this.stoppingDistance)
+    {
+        desiredSpeed = Math.sqrt(2 * this.maxForce * Math.sqrt(dx*dx+dy*dy)); 
+        this.seek(target, desiredSpeed); 
+    }
+    else
+    {
+        this.seek(target); 
+    }
+}
+
 DumbObject.prototype.update = function(dt)
 {
-    function square(x) { return x * x; } // helper function
-    
-    // cap the magnitude of the steering force to maxForce
-    if(square(this.steerX) + square(this.steerY) > square(this.maxForce))
+    Object.getPrototypeOf(DumbObject.prototype).update.call(this, dt); 
+}
+
+DumbObject.prototype.render = function(context)
+{
+    Object.getPrototypeOf(DumbObject.prototype).render.call(this, context); 
+   
+    if (this.desiredvx)
     {
-        var scaleFactor = square(this.maxForce) / (square(this.steerX) + square(this.steerY));
-        this.steerX *= scaleFactor; 
-        this.steerY *= scaleFactor; 
+        context.beginPath(); 
+        context.strokeStyle = "#000088";
+        context.moveTo(this.x, this.y); 
+        context.lineTo(this.x + this.desiredvx, this.y + this.desiredvy); 
+        context.stroke(); 
     }
-    
-    this.vx += this.steerX * dt; 
-    this.vy += this.steerY * dt; 
-    
-    // cap the magnitude of the velocity
-    if(square(this.vx) + square(this.vy) > square(this.maxSpeed))
-    {
-        var scaleFactor = square(this.maxSpeed) / (square(this.vx) + square(this.vy));
-        this.vx *= scaleFactor; 
-        this.vy *= scaleFactor; 
-    }
-    
-    this.x += this.vx; 
-    this.y += this.vy; 
 }

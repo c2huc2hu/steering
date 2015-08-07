@@ -5,8 +5,8 @@ var MovingObject = function(x, y)
     this.x = x; 
     this.y = y; 
     
-    this.vx = 10; 
-    this.vy = 10; 
+    this.vx = 0; 
+    this.vy = 0; 
 }
 
 // dt: time difference in seconds

@@ -1,4 +1,5 @@
 // Class boid
+// possibly no longer used
 
 var Boid = function(x, y)
 {

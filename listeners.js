@@ -8,8 +8,8 @@ function initListeners()
 function handleMouseMove(event)
 {
     
-    mousex = event.x - canvas.offsetLeft; // note: doesn't take into account borders yet
-    mousey = event.y - canvas.offsetTop; 
+    mouse.x = event.x - canvas.offsetLeft; // note: doesn't take into account borders yet
+    mouse.y = event.y - canvas.offsetTop; 
 }
 
 initListeners(); 

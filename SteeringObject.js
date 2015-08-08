@@ -55,14 +55,14 @@ SteeringObject.prototype.render = function(context)
 {
     context.beginPath(); 
     context.strokeStyle = "#888888";
-    context.arc(this.x, this.y, 5, 0, 2 * Math.PI); 
-    context.moveTo(this.x, this.y); 
-    context.lineTo(this.x + this.vx , this.y + this.vy ); 
-    context.stroke();  
+    context.arc(this.x - screenX, this.y - screenY, 5, 0, 2 * Math.PI); 
+    context.moveTo(this.x - screenX, this.y - screenY); 
+    context.lineTo(this.x + this.vx - screenX, this.y + this.vy - screenY); 
+    context.stroke(); 
     
     context.beginPath(); 
-    context.moveTo(this.x + this.vx , this.y + this.vy ); 
+    context.moveTo(this.x + this.vx    - screenX, this.y + this.vy - screenY); 
     context.strokeStyle = "#880000"; 
-    context.lineTo(this.x + this.vx  + this.steerX , this.y + this.vy  + this.steerY );  // steering force is red. 
+    context.lineTo(this.x + this.vx + this.steerX - screenX, this.y + this.vy + this.steerY - screenY); // steering force is red. 
     context.stroke();
 }

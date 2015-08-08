@@ -7,7 +7,7 @@ var canvas; // main canvas for the game
 var ctx; // context for the game, so you can draw on this. 
 var mouse = {x:0, y:0}; 
 
-var initGraph = function() {};   //placeholders for functions defined later
+var initGraph = function() {};    //placeholders for functions defined later
 var updateGraph = function() {}; 
 
 function init()
@@ -66,7 +66,7 @@ function checkCollisions()
             return false; // reject. 
         return Math.pow(module.x - bullet.x, 2) + Math.pow(module.y - bullet.y, 2) < Math.pow(module.radius, 2); 
     }
-   
+    
     moduleQT = new QuadTree(0, 0, fieldWidth, fieldHeight, 10); 
     for (var i=0; i < ships.length; i++)
     {
@@ -78,7 +78,7 @@ function checkCollisions()
     
     for (var i=0; i < bullets.length; i++)
     {
-        hitModule = moduleQT.query(bullets[i], refineCollision);  
+        hitModule = moduleQT.query(bullets[i], refineCollision); 
         if (hitModule != null)
         {
             hitModule.takeDamage(bullets[i]); 
@@ -128,7 +128,7 @@ function render(context)
     // render the mouse
     context.beginPath(); 
     context.strokeStyle = "#00FF00"; 
-    context.arc(mouse.x, mouse.y, 5, 0, 2 * Math.PI); 
+    context.arc(mouse.x - screenX, mouse.y - screenY, 5, 0, 2 * Math.PI); 
     context.stroke(); 
     
     for(var i = 0; i<ships.length; i++)

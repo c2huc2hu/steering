@@ -5,6 +5,8 @@ var canvasWidth = 512;
 var canvasHeight = 512; 
 var fieldWidth = 2048; 
 var fieldHeight = 1024; 
+var screenX = 0; // coordinates of the top left corner
+var screenY = 0; 
 
 // Global arrays
 var bullets = []; 

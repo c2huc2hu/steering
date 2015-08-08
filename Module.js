@@ -3,13 +3,18 @@
 var Module = function(ship, offsetX, offsetY)
 {
     this.ship = ship; // this.ship must have: x, y, heading. 
-    this.offsetX = offsetX;  
+    this.offsetX = offsetX; 
     this.offsetY = offsetY; 
     
     this.x = this.ship.x + offsetX; 
     this.y = this.ship.y + offsetY; 
     
     this.radius = 10; // temporary value
+}
+
+Module.prototype.takeDamage = function(bullet)
+{
+    // do nothing for now
 }
 
 Module.prototype.render = function(context)
@@ -22,13 +27,8 @@ Module.prototype.render = function(context)
     
     context.beginPath(); 
     context.strokeStyle = "#444488";
-    context.arc(this.x, this.y, 5, 0, 2 * Math.PI); 
+    context.arc(this.x - screenX, this.y - screenY, 5, 0, 2 * Math.PI); 
     context.stroke(); 
-}
-
-Module.prototype.takeDamage = function(bullet)
-{
-    // do nothing for now
 }
 
 Module.prototype.update = function(dt)

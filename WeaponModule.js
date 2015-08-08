@@ -32,8 +32,8 @@ WeaponModule.prototype.render = function(context)
 {
     context.beginPath(); 
     context.strokeStyle = "#AA4444"; 
-    context.moveTo(this.x, this.y); 
-    context.lineTo(this.x + Math.cos(this.heading + this.ship.heading) * 5, this.y + Math.sin(this.heading + this.ship.heading) * 5);
+    context.moveTo(this.x - screenX, this.y - screenY); 
+    context.lineTo(this.x + Math.cos(this.heading + this.ship.heading) * 5 - screenX, this.y + Math.sin(this.heading + this.ship.heading) * 5 - screenY);
     context.stroke(); 
     
     Object.getPrototypeOf(WeaponModule.prototype).render.call(this, context); 
@@ -43,7 +43,7 @@ WeaponModule.prototype.update = function(dt)
 {
     if (this.target === undefined)
     {
-        return;  // do nothing
+        return; // do nothing
     }
     
     var desiredHeading = (Math.atan2(this.target.y - this.y, this.target.x - this.x) - this.ship.heading) % (2 * Math.PI); 

@@ -1,7 +1,7 @@
 var Ship = function (x, y, maxSpeed, maxForce, turnSpeed)
 {
     DumbObject.call(this, x, y, maxSpeed, maxForce); 
-    this.turnSpeed = turnSpeed;  // radians / second
+    this.turnSpeed = turnSpeed; // radians / second
     
     this.heading = 0; // measured clockwise from pointing right. 
     this.modules = []; 
@@ -58,9 +58,7 @@ Ship.prototype.render = function(context)
     
     context.beginPath(); 
     context.strokeStyle = "#FFFFFF"; 
-    context.moveTo(this.x, this.y);
-    context.lineTo(this.x + Math.cos(this.heading) * 30, this.y + Math.sin(this.heading) * 30); 
+    context.moveTo(this.x - screenX, this.y - screenY);
+    context.lineTo(this.x + Math.cos(this.heading) * 30 - screenX, this.y + Math.sin(this.heading) * 30 - screenY); 
     context.stroke(); 
-    
-    
 }

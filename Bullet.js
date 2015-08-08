@@ -18,7 +18,7 @@ Bullet.prototype.render = function(context)
 {
     context.beginPath(); 
     context.strokeStyle = "#FF4444"; 
-    context.moveTo(this.x, this.y); 
-    context.lineTo(this.x + this.vx * 0.05, this.y + this.vy * 0.05); 
+    context.moveTo(this.x - screenX, this.y - screenY); 
+    context.lineTo(this.x + this.vx * 0.05 - screenX, this.y + this.vy * 0.05 - screenY); 
     context.stroke(); 
 }

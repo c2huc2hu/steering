@@ -26,8 +26,19 @@ Ship.prototype.clone = function(ship)
 
 Ship.prototype.update = function(dt)
 {
+    // walls apply a repulsive force if you get within 100 pixels. 
+    if (this.x < 100) 
+        this.steerX = this.maxForce; 
+    else if (fieldWidth - this.x < 100)
+        this.steerX = -this.maxForce; 
+    if (this.y < 100)
+        this.steerY = this.maxForce; 
+    else if (fieldHeight - this.y < 100)
+        this.steerY = -this.maxForce;
+ 
     Object.getPrototypeOf(Ship.prototype).update.call(this, dt); 
-    
+ 
+    // steer the visuals towards where the velocity points.
     var desiredHeading = Math.atan2(this.vy, this.vx); 
     if (Math.abs(desiredHeading - this.heading) % (2 * Math.PI) < this.turnSpeed * dt)
         this.heading = desiredHeading; 

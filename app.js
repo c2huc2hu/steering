@@ -1,12 +1,4 @@
 // app.js
-
-var lastTime = 0;
-var frame = 0; // frame counter
-
-var canvas; // main canvas for the game 
-var ctx; // context for the game, so you can draw on this. 
-var mouse = {x:0, y:0}; 
-
 var initGraph = function() {};    //placeholders for functions defined later
 var updateGraph = function() {}; 
 
@@ -102,7 +94,7 @@ function checkCollisions()
 
 function update(dt)
 {
-    //ships[0].seek(mouse);
+    ships[0].seek(mouse);
     ships[1].modules[0].fire();
     ships[1].arrive(mouse);
     
@@ -119,17 +111,20 @@ function update(dt)
     frame++; 
     
     updateGraph(); 
+    keys.update(dt);
 }
 
 function render(context)
 {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-    // render the mouse
+    // render the bounding box
     context.beginPath(); 
     context.strokeStyle = "#00FF00"; 
-    context.arc(mouse.x - screenX, mouse.y - screenY, 5, 0, 2 * Math.PI); 
+    context.rect(-screenX, -screenY, fieldWidth, fieldHeight); 
     context.stroke(); 
+    
+    mouse.render(context); 
     
     for(var i = 0; i<ships.length; i++)
     {

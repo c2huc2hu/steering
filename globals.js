@@ -9,7 +9,7 @@ var fieldHeight = 1024;
 // Global arrays
 var bullets = []; 
 var ships = []; 
-var moduleQT = new QuadTree(0, 0, fieldWidth, fieldHeight); // modules go here so I can check for collisions
+var moduleQT = new QuadTree(0, 0, fieldWidth, fieldHeight, 10); // modules go here so I can check for collisions
 
 var bulletTypes = []; 
 var shipTypes = []; 

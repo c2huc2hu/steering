@@ -23,7 +23,8 @@ function init()
     ships[1].addModule("engine module", 5, -5);
     ships[0].addModule("engine module", 5, -5);
     
-    ships[0].vx = 100
+    ships[0].vx = 100;
+    ships[0].vy = 50;
     
     //images = initImages(); 
     
@@ -56,6 +57,49 @@ function main()
     render(ctx);
 }
 
+// Check for bullets hitting ships using the quadtree.
+function checkCollisions()
+{
+    function refineCollision(module, bullet)
+    {
+        if (module.ship == bullet.source)
+            return false; // reject. 
+        return Math.pow(module.x - bullet.x, 2) + Math.pow(module.y - bullet.y, 2) < Math.pow(module.radius, 2); 
+    }
+   
+    moduleQT = new QuadTree(0, 0, fieldWidth, fieldHeight, 10); 
+    for (var i=0; i < ships.length; i++)
+    {
+        for (var j=0; j < ships[i].modules.length; j++)
+        {
+            moduleQT.insertCircle(ships[i].modules[j]); 
+        }
+    }
+    
+    for (var i=0; i < bullets.length; i++)
+    {
+        hitModule = moduleQT.query(bullets[i], refineCollision);  
+        if (hitModule != null)
+        {
+            hitModule.takeDamage(bullets[i]); 
+            bullets[i].deleteFlag = true; 
+        }
+    }
+    
+    // delete bullets
+    for(var i=0; i < bullets.length - 1; i++)
+    {
+        if (bullets[i].deleteFlag)
+        {
+            bullets[i] = bullets.pop(); 
+        }
+    }
+    if (bullets.length > 0 && bullets[bullets.length-1].deleteFlag)
+    {
+        bullets.pop(); 
+    }
+}
+
 function update(dt)
 {
     //ships[0].seek(mouse);
@@ -71,6 +115,7 @@ function update(dt)
         bullets[i].update(dt); 
     }
     
+    checkCollisions();
     frame++; 
     
     updateGraph(); 

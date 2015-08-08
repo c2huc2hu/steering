@@ -7,22 +7,29 @@ var canvas; // main canvas for the game
 var ctx; // context for the game, so you can draw on this. 
 var mouse = {x:0, y:0}; 
 
-var initGraph = function() {};   //placeholders
+var initGraph = function() {};   //placeholders for functions defined later
 var updateGraph = function() {}; 
 
 function init()
 {    
     // initialize the types of bullets. in the future, this will probably go elsewhere
-    bulletTypes.push(new Bullet(0, 0, 100)); 
+    bulletTypes.push(new Bullet(0, 0, 500)); 
 
     // Initialize ships
-    ships.push(new Ship(10, 50, 100, 70, 1), new Ship(10, 50, 100, 70, 1)); 
-    ships[0].addWeaponModule(5, 5, bulletTypes[0], 1);
-    //ships[0].addModule("random module", 5, 5); 
-    ships[0].addModule("module 2", 5, -5);
+    ships.push(new Ship(10, 50, 100, 70, 1))
+    ships.push(new Ship(30, 50, 100, 70, 1)); 
+    ships[1].addWeaponModule(5, 5, bulletTypes[0], 500);
+    ships[1].modules[0].aim(ships[0]); 
+    ships[1].addModule("engine module", 5, -5);
+    ships[0].addModule("engine module", 5, -5);
+    
+    ships[0].vx = 100
+    
     //images = initImages(); 
     
     canvas = document.getElementById("canvas")
+    canvas.width = canvasWidth; 
+    canvas.height = canvasHeight;
     canvas.style.backgroundColor = "#000000"
     ctx = canvas.getContext("2d");
     
@@ -51,16 +58,15 @@ function main()
 
 function update(dt)
 {
-    ships[0].arrive(mouse);
-    ships[0].modules[0].fire(); 
-    //ships[1].seek(mouse);
-
+    //ships[0].seek(mouse);
+    ships[1].modules[0].fire();
+    ships[1].arrive(mouse);
     
-    for(i=0; i<ships.length; i++)
+    for(var i = 0; i<ships.length; i++)
     {
         ships[i].update(dt); 
     }
-    for(i=0; i<bullets.length;i++)
+    for(var i = 0; i<bullets.length;i++)
     {
         bullets[i].update(dt); 
     }
@@ -80,11 +86,11 @@ function render(context)
     context.arc(mouse.x, mouse.y, 5, 0, 2 * Math.PI); 
     context.stroke(); 
     
-    for(i=0; i<ships.length; i++)
+    for(var i = 0; i<ships.length; i++)
     {
         ships[i].render(context); 
     }
-    for(i=0; i<bullets.length; i++)
+    for(var i = 0; i<bullets.length; i++)
     {
         bullets[i].render(context); 
     }

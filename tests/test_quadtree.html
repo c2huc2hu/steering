@@ -1,0 +1,24 @@
+<title>Testing Quad Trees</title>
+<b>Testing QuadTree </b>
+<br>
+
+<script type="text/javascript" src="../lib/QuadTree.js"> Quad Tree </script> 
+
+<script>
+
+var q = new QuadTree(0, 0, 128, 128, nodeCapacity=3); 
+o = {left:52, right:63, top:35, bottom:100}; 
+o3 =  {left:52, right:63, top:90, bottom:100}; 
+o2 =  {left:52, right:63, top:35, bottom:100}; 
+o4 =  {left:52, right:63, top:90, bottom:100}; 
+o6 =  {left:52, right:52, top:90, bottom:90}; 
+o5 =  {left:52, right:63, top:5, bottom:10}; 
+q.insert(o); 
+q.insert(o3); 
+q.insert(o2); 
+q.insert(o4); 
+q.insert(o5); 
+q.insert(o6);
+
+console.log(q.query({x:53, y:95})); // should return o4. 
+</script>

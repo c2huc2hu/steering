@@ -29,22 +29,38 @@ Ship.prototype.update = function(dt)
     Object.getPrototypeOf(Ship.prototype).update.call(this, dt); 
     
     var desiredHeading = Math.atan2(this.vy, this.vx); 
-    if (desiredHeading - this.heading < this.turnSpeed)
+    if (Math.abs(desiredHeading - this.heading) % (2 * Math.PI) < this.turnSpeed * dt)
         this.heading = desiredHeading; 
-    else if (desiredHeading - this.heading < 0)
+    else if ((desiredHeading - this.heading + 4 * Math.PI) % (2 * Math.PI) < Math.PI)
+    {
         this.heading += this.turnSpeed * dt; 
-    else if (desiredHeading - this.heading > 0)
+    }
+    else 
     {
         this.heading -= this.turnSpeed * dt; 
     }
     this.heading = (this.heading + 2 * Math.PI) % (2 * Math.PI);
+    
+    for(var i = 0; i<this.modules.length;i++)
+    {
+        this.modules[i].update(dt); 
+    }
 }
 
 Ship.prototype.render = function(context)
-{
+{    
     Object.getPrototypeOf(Ship.prototype).render.call(this, context); 
-    for (i = 0; i < this.modules.length; i++)
+    
+    for (var i = 0; i < this.modules.length; i++)
     {
         this.modules[i].render(context); 
-    }
+    } 
+    
+    context.beginPath(); 
+    context.strokeStyle = "#FFFFFF"; 
+    context.moveTo(this.x, this.y);
+    context.lineTo(this.x + Math.cos(this.heading) * 30, this.y + Math.sin(this.heading) * 30); 
+    context.stroke(); 
+    
+    
 }

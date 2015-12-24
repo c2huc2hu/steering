@@ -1,0 +1,4 @@
+{
+"light bullet": {"speed":100, "damage":20}, 
+"plasma bomb":  {"speed":30, "damage":200}
+}

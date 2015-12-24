@@ -13,8 +13,12 @@ var bullets = [];
 var ships = []; 
 var moduleQT = new QuadTree(0, 0, fieldWidth, fieldHeight, 10); // modules go here so I can check for collisions
 
-var bulletTypes = []; 
-var shipTypes = []; 
+var assets = {
+    bulletTypes:[], 
+    moduleTypes:[], 
+    weaponTypes:[], 
+    shipTypes:[], 
+    levels:[]}; 
 
 // Input objects 
 var mouse = {x:0, y:0}; 
@@ -29,8 +33,6 @@ var canvas; // main canvas for the game
 var ctx; // context for the game, so you can draw on this. 
 
 
-
-
 /* Remove array[index] from the array in O(1) time. Messes up the order of the objects */ 
 function remove(array, index)
 {
@@ -39,3 +41,7 @@ function remove(array, index)
     else
         array[index] = array.pop(); 
 }
+
+// constants for states. if there's a way to make static variables nicely, they should go in Ship
+
+//UISTATES = {SELECT: "UISTATE SELECT", ACTION: "UISTATE ACTION", TARGET: "UISTATE TARGET"}; // these states correspond to subject, verb, object. 

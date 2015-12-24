@@ -1,0 +1,8 @@
+Required
+- Implement QuadTree.queryRect(...) so that I can select a group of ships
+- Develop a user interface model, i.e. the finite state machine
+- Implement movement of units in a pattern (i.e. formations)
+
+
+Optional
+- Organize scripts into folders

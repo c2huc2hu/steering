@@ -1,0 +1,11 @@
+{
+"scout":{       "maxSpeed":250, "maxForce":200 "turnSpeed":100,
+                "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}], 
+                "modules":[]}, 
+"interceptor":{ "maxSpeed":130, "maxForce":150 "turnSpeed":100
+                "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}, 
+                            {"type":"heavy machine gun", "offsetX":0, "offsetY":10}],
+                "modules":[]},
+"bomber":{      "weapons":[ {"type":"plasma bomb", "offsetX":0, "offsetY":0}], 
+                "modules":[]}
+}

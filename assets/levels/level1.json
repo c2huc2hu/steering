@@ -1,0 +1,9 @@
+{
+"players":["player", "cpu"],
+
+"ships":[
+    {"player":"player", "type":"scout", "x":150, "y":180},
+    {"player":"player", "type":"bomber", "x":170, "y":180}, 
+    
+    {"player":"cpu", "type":"interceptor", "x":300, "y":200}]
+}

@@ -1,17 +1,28 @@
-var Bullet = function(x, y, speed) // add some more parameters here for damage and stuff
+var Bullet = function(x, y, type) // add some more parameters here for damage and stuff
 {
     MovingObject.call(this, x, y); 
-    this.speed = speed; 
+    this.type = type; // string which gives the lookup in assets.bulletTypes
+    
+    // copy all properties from the json: damage, speed so far. 
+    var obj = assets.bulletTypes[type]; 
+    for(var prop in obj)
+        this[prop] = obj[prop];     
 }
 Bullet.prototype = Object.create(MovingObject.prototype); 
 
-// clones this type of bullet. properties x, y, heading are specific to individual bullets and should be set accordingly
-Bullet.prototype.clone = function(x, y, heading)
+/*// static method to load from an object with properties: speed and damage
+Bullet.loadFromObject = function(o)
 {
-    var b = new Bullet(x, y, this.speed); 
-    b.vx = this.speed * Math.cos(heading); 
-    b.vy = this.speed * Math.sin(heading); 
+    var b = new Bullet(0, 0, o.speed); 
+    b.damage = o.damage; 
     return b; 
+}*/ 
+
+// Sets the heading of the bullet. 
+Bullet.prototype.setHeading = function(heading)
+{
+    this.vx = this.speed * Math.cos(heading); 
+    this.vy = this.speed * Math.sin(heading);    
 }
 
 Bullet.prototype.render = function(context)

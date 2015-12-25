@@ -4,19 +4,10 @@ var updateGraph = function() {};
 
 function init()
 {    
-    // initialize the types of bullets. in the future, this will probably go elsewhere
-    //bulletTypes.push(new Bullet(0, 0, {speed:500})); 
-
-    // Initialize ships
-    ships.push(new Ship(250, 200, 100, 70, 1))
-    ships.push(new Ship(130, 150, 100, 70, 1)); 
-    ships[1].addWeaponModule(5, 5, "light bullet", 500, 0, 0.5);
-    ships[1].modules[0].aim(ships[0]); 
-    ships[1].addModule("engine module", 5, -5);
-    ships[0].addModule("engine module", 5, -5);
-    
-    //ships[0].vx = 100;
-    //ships[0].vy = 50;
+    // Initialize ships for testing 
+    ships.push(new Ship(250, 200, "scout")); 
+    ships.push(new Ship(130, 150, "interceptor")); 
+    ships.push(new Ship(200, 170, "bomber")); 
     
     //images = initImages(); 
     
@@ -94,8 +85,9 @@ function checkCollisions()
 
 function update(dt)
 {
-    //ships[0].seek(mouse);
+    ships[2].seek(mouse);
     ships[1].modules[0].fire();
+    
     //ships[1].arrive(mouse);
     
     for(var i = 0; i<ships.length; i++)

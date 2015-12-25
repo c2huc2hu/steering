@@ -8,8 +8,6 @@ var Module = function(ship, offsetX, offsetY)
     
     this.x = this.ship.x + offsetX; 
     this.y = this.ship.y + offsetY; 
-    
-    this.radius = 10; // temporary value
 }
 
 Module.prototype.takeDamage = function(bullet)
@@ -27,7 +25,7 @@ Module.prototype.render = function(context)
     
     context.beginPath(); 
     context.strokeStyle = "#444488";
-    context.arc(this.x - screenX, this.y - screenY, 5, 0, 2 * Math.PI); 
+    context.arc(this.x - screenX, this.y - screenY, this.radius, 0, 2 * Math.PI); 
     context.stroke(); 
 }
 

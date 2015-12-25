@@ -1,20 +1,29 @@
-var Ship = function (x, y, maxSpeed, maxForce, turnSpeed)
+var Ship = function (x, y, type)
 {
-    DumbObject.call(this, x, y, maxSpeed, maxForce); 
-    this.turnSpeed = turnSpeed; // radians / second
+    // load properties: turnSpeed (rad/s), maxSpeed (px/s), maxForce (??)
+    this.type = type; 
+    var obj = assets.shipTypes[type]; 
+    for(var prop in obj)
+        this[prop] = obj[prop];    
+    
+    DumbObject.call(this, x, y, this.maxSpeed, this.maxForce); 
+    
+    this.modules = []; 
+    for (var i in obj.weapons)
+        this.addWeaponModule(obj.weapons[i].offsetX, obj.weapons[i].offsetY, obj.weapons[i].type); 
+    for(var module in obj.modules)
+        this.addWeaponModule(obj.modules[i].offsetX, obj.modules[i].offsetY, obj.modules[i].type); 
     
     this.heading = 0; // measured clockwise from pointing right. 
-    this.modules = []; 
-    
     this.moveState = Ship.moveStates.STOP;
 }
 Ship.prototype = Object.create(DumbObject.prototype);
 
 Ship.moveStates = {STOP: "MOVESTATE STOP", ATTACK: "MOVESTATE ATTACK", FOLLOW: "MOVESTATE FOLLOW", ARRIVE: "MOVESTATE ARRIVE", DOCK: "MOVESTATE DOCK"}; 
 
-Ship.prototype.addWeaponModule = function(offsetX, offsetY, bullet, cooldown, minAngle, maxAngle)
+Ship.prototype.addWeaponModule = function(offsetX, offsetY, weaponType)
 {
-    this.modules.push(new WeaponModule(this, offsetX, offsetY, bullet, cooldown, minAngle, maxAngle)); 
+    this.modules.push(new WeaponModule(this, offsetX, offsetY, weaponType)); 
 }
 
 Ship.prototype.addModule = function(type, offsetX, offsetY)

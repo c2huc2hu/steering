@@ -1,17 +1,17 @@
-var WeaponModule = function(ship, offsetX, offsetY, bulletType, cooldown, minAngle, maxAngle)
+var WeaponModule = function(ship, offsetX, offsetY, type)
 {
     Module.call(this, ship, offsetX, offsetY); 
-    this.bulletType = bulletType; 
-    this.cooldown = cooldown; 
+    this.type = type; // should be a string 
     
-    this.lastFire = Date.now();
+    // copy all properties from the json: bulletType, cooldown, minAngle, maxAngle, turnSpeed, radius so far 
+    var obj = assets.weaponTypes[type]; 
+    for(var prop in obj)
+        this[prop] = obj[prop];
+    
+    this.lastFire = Date.now(); 
     this.heading = 0; 
-    this.turnSpeed = 2; // TEMPORARY CONSTANT: will be replaced when I actually make weapon types
-    this.radius = 5; // another temporary constant
-    
-    this.minAngle = minAngle || 0;  // define the firing cone of the weapon
-    this.maxAngle = maxAngle || 2 * Math.PI; // default to a weapon that has 360 degree coverage
 }
+    
 WeaponModule.prototype = Object.create(Module.prototype);
 
 WeaponModule.prototype.aim = function(target)
@@ -21,7 +21,7 @@ WeaponModule.prototype.aim = function(target)
 
 WeaponModule.prototype.fire = function()
 {
-    if (Date.now() - this.lastFire > this.cooldown)
+    if (Date.now() - this.lastFire > this.cooldown * 1000)
     {
         var newBullet = new Bullet(this.x, this.y, this.bulletType);
         newBullet.setHeading(this.heading + this.ship.heading); 

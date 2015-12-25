@@ -1,11 +1,14 @@
+// DEPRECATED. I am currently doing any balancing in the loadAssets file
+
 {
-"scout":{       "maxSpeed":250, "maxForce":200 "turnSpeed":100,
+"scout":{       "maxSpeed":250, "maxForce":200, "turnSpeed":100,
                 "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}], 
                 "modules":[]}, 
-"interceptor":{ "maxSpeed":130, "maxForce":150 "turnSpeed":100
+"interceptor":{ "maxSpeed":200, "maxForce":300, "turnSpeed":150,
                 "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}, 
                             {"type":"heavy machine gun", "offsetX":0, "offsetY":10}],
                 "modules":[]},
-"bomber":{      "weapons":[ {"type":"plasma bomb", "offsetX":0, "offsetY":0}], 
+"bomber":{      "maxSpeed":150, "maxForce":200, "turnSpeed":60,
+                "weapons":[ {"type":"plasma bomb", "offsetX":0, "offsetY":0}], 
                 "modules":[]}
 }

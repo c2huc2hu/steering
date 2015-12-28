@@ -8,11 +8,18 @@ var Module = function(ship, offsetX, offsetY)
     
     this.x = this.ship.x + offsetX; 
     this.y = this.ship.y + offsetY; 
+    
+    this.destroyed = false; 
 }
 
 Module.prototype.takeDamage = function(bullet)
 {
-    // do nothing for now
+    this.health -= this.ship.takeDamage(bullet, this.dmgModifier); 
+    
+    if (this.health <= 0)
+    {
+        this.destroyed = true; 
+    }
 }
 
 Module.prototype.render = function(context)

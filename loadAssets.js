@@ -2,19 +2,19 @@
 
 assets = {
     "bulletTypes":{
-        "light bullet": {"speed":100, "damage":20}, 
-        "plasma bomb":  {"speed":30, "damage":200}
+        "light bullet": {"speed":100, "damage":20, "pierce":0.1}, 
+        "plasma bomb":  {"speed":30, "damage":200, "pierce":1}
     },
     "shipTypes":{
-        "scout":{       "maxSpeed":250, "maxForce":200, "turnSpeed":1,
-                        "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}], 
+        "scout":{       "maxSpeed":250, "maxForce":200, "turnSpeed":1, "health":60, "shield":50,
+                        "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0, "dmgModifier":1}], 
                         "modules":[]}, 
-        "interceptor":{ "maxSpeed":200, "maxForce":300, "turnSpeed":1.3,
-                        "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0}, 
-                                    {"type":"heavy machine gun", "offsetX":0, "offsetY":10}],
+        "interceptor":{ "maxSpeed":200, "maxForce":300, "turnSpeed":1.3, "health":130, "shield":100,
+                        "weapons":[ {"type":"light machine gun", "offsetX":0, "offsetY":0, "dmgModifier":1}, 
+                                    {"type":"heavy machine gun", "offsetX":0, "offsetY":10, "dmgModifier":1}],
                         "modules":[]},
-        "bomber":{      "maxSpeed":150, "maxForce":200, "turnSpeed":0.6,
-                        "weapons":[ {"type":"bomb launcher", "offsetX":0, "offsetY":0}], 
+        "bomber":{      "maxSpeed":150, "maxForce":200, "turnSpeed":0.6, "health":150, "shield":80, 
+                        "weapons":[ {"type":"bomb launcher", "offsetX":0, "offsetY":0, "dmgModifier":1}], 
                         "modules":[]}
     },
     "weaponTypes":{

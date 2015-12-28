@@ -16,6 +16,7 @@ var Ship = function (x, y, type)
     
     this.heading = 0; // measured clockwise from pointing right. 
     this.moveState = Ship.moveStates.STOP;
+    this.destroyed = false; 
 }
 Ship.prototype = Object.create(DumbObject.prototype);
 
@@ -31,11 +32,36 @@ Ship.prototype.addModule = function(type, offsetX, offsetY)
     this.modules.push(new Module(this, offsetX, offsetY)); 
 }
 
-/* Copy all properties from a ship 
-Ship.prototype.clone = function(ship) 
+// Handles bullets hitting the ship. The dmgModifier multiplies the damage, and should come from the module 
+// Return the amount of damage the ship's hull takes (to assign that damage to the module)
+Ship.prototype.takeDamage = function(bullet, dmgModifier)
 {
-        
-} */ 
+    var result; 
+    if (this.shield == 0)
+    {
+        this.health -= bullet.damage * dmgModifier; 
+        result = bullet.damage * dmgModifier; 
+    } 
+    else if (this.shield > bullet.damage)
+    {
+        this.shield -= bullet.damage; // modifier doesn't affect shield damage
+        this.health -= bullet.damage * bullet.pierce; 
+        result = bullet.damage * bullet.pierce; 
+    }
+    else 
+    {
+        var dmg = (bullet.damage - this.shield) * dmgModifier + this.shield * bullet.pierce;  // damage not absorbed by shield 
+        this.health -= dmg; 
+        this.shield = 0; 
+        result = dmg; 
+    }
+    
+    if (this.health <= 0)
+    {
+        this.destroyed = true; 
+    }
+    return result; 
+}
 
 Ship.prototype.update = function(dt)
 {

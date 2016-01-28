@@ -10,9 +10,18 @@ var Ship = function (x, y, type)
     
     this.modules = []; 
     for (var i in obj.weapons)
+    {
         this.addWeaponModule(obj.weapons[i].offsetX, obj.weapons[i].offsetY, obj.weapons[i].type); 
+        for(var prop in obj.weapons[i])
+            this.modules[i][prop] = obj.weapons[i][prop]; 
+    }
+        
     for(var module in obj.modules)
-        this.addWeaponModule(obj.modules[i].offsetX, obj.modules[i].offsetY, obj.modules[i].type); 
+    {
+        this.addModule(obj.modules[i].offsetX, obj.modules[i].offsetY, obj.modules[i].type); 
+        for(var prop in obj.modules[i])
+            this.modules[length(this.modules) - 1][prop] = obj.modules[i][prop]
+    }
     
     this.heading = 0; // measured clockwise from pointing right. 
     this.moveState = Ship.moveStates.STOP;
@@ -27,9 +36,9 @@ Ship.prototype.addWeaponModule = function(offsetX, offsetY, weaponType)
     this.modules.push(new WeaponModule(this, offsetX, offsetY, weaponType)); 
 }
 
-Ship.prototype.addModule = function(type, offsetX, offsetY)
+Ship.prototype.addModule = function(offsetX, offsetY, type)
 {
-    this.modules.push(new Module(this, offsetX, offsetY)); 
+    this.modules.push(new Module(this, offsetX, offsetY, type)); 
 }
 
 // Handles bullets hitting the ship. The dmgModifier multiplies the damage, and should come from the module 
@@ -125,60 +134,34 @@ Ship.prototype.render = function(context)
     context.moveTo(this.x - screenX, this.y - screenY);
     context.lineTo(this.x + Math.cos(this.heading) * 30 - screenX, this.y + Math.sin(this.heading) * 30 - screenY); 
     context.stroke(); 
+    
+    // draw a health bar if selected. 
+    if (this.selected)
+    {
+        context.beginPath(); 
+        context.fillStyle = "#BB0000"; 
+        context.fillRect(this.x - 10, this.y - 10, 20, 5); 
+        context.stroke(); 
+        
+        context.beginPath(); 
+        context.fillStyle = "#00BB00"; 
+        context.fillRect(this.x - 10, this.y - 10, this.health / assets.shipTypes[this.type].health * 20, 5); 
+        context.stroke();  
+        
+        context.beginPath(); 
+        context.fillStyle = "#0000BB"; 
+        context.fillRect(this.x - 10, this.y - 15, 20, 5); 
+        context.stroke(); 
+        
+        //context.beginPath(); 
+        context.fillStyle = "#0055BB"; 
+        context.fillRect(this.x - 10, this.y - 15, this.shield / assets.shipTypes[this.type].shield * 20, 5); 
+        context.stroke();  
+    }
 }
 
 Ship.prototype.setMoveState = function(moveState, target)
 {
     this.moveState = moveState; 
     this.target = target; 
-}
-
-Ship.prototype.stateTransitions = function()
-{
-    switch(this.moveState)
-    {
-        case MOVESTATES.STOP:
-            break;
-        case MOVESTATES.ATTACK:
-            if (this.target.destroyed)
-            {
-                // find a new target. this function can be refined to do things like 
-                // "select a slower target", but for now, it just selects the first thing within 500 pixels (an arbitrary value)
-                
-                // if no target is found, go to the last known position of the target. 
-                this.target = {x:this.target.x, y:this.target.y};  
-                this.moveState = MOVESTATES.ARRIVE; 
-                
-                // linear search for the target. this may be replaced with a quad tree search
-                for (var i=0; i < ships.length; i++)
-                {
-                    var dx = this.x - ships[i].x; 
-                    var dy = this.y - ships[i].y; 
-                    if(!this.target.destroyed && dx*dx+dy*dy < 500*500)
-                    {
-                        this.target = ships[i];
-                        this.moveState = MOVESTATES.ATTACK; 
-                        break; 
-                    }
-                }
-            }
-            break; 
-        case MOVESTATES.FOLLOW:
-            if (this.target.destroyed)
-            {
-                this.target = {x:this.target.x, y:this.target.y}; 
-                this.moveState = MOVESTATES.ARRIVE; 
-            }
-            break; 
-        case MOVESTATES.ARRIVE:
-            // allow an error of 1 pixel in the position when arriving. 
-            if(Math.pow(this.x - target.x, 2) + Math.pow(this.y - target.y, 2) < 1)
-            {
-                this.moveState = MOVESTATES.STOP; 
-            }
-            break; 
-        case MOVESTATES.DOCK:
-            // docking not implemented yet. 
-            break; 
-    }
 }

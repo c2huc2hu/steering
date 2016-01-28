@@ -1,10 +1,13 @@
 // base class/ placeholder for modules
 
-var Module = function(ship, offsetX, offsetY)
+// constructor contains the minimum necessary things to create a module. 
+var Module = function(ship, offsetX, offsetY, type)
 {
     this.ship = ship; // this.ship must have: x, y, heading. 
     this.offsetX = offsetX; 
     this.offsetY = offsetY; 
+    
+    this.type = type; 
     
     this.x = this.ship.x + offsetX; 
     this.y = this.ship.y + offsetY; 
